@@ -10,7 +10,8 @@
 
 int main()
 {
-    int answer = 0;
+    int step_one_answer = 0;
+    int step_two_answer = 0;
     std::string line;
 
     std::ifstream input_file("input.txt");
@@ -26,10 +27,15 @@ int main()
         std::string game_line = line.substr(header_end + 2, std::string::npos);
         if (is_possible_game(game_line, MAX_RED, MAX_BLUE, MAX_GREEN))
         {
-            answer += game_id;
+            step_one_answer += game_id;
         }
+
+        step_two_answer += calculate_cube_set_power(game_line);
+
     }
 
-    std::cout << answer << std::endl;
+    std::cout << "Sum of possible game ids: " << step_one_answer << std::endl;
+    std::cout << "Sum of powers: " << step_two_answer << std::endl;
+
     return 0;
 }

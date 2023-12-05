@@ -62,7 +62,7 @@ bool is_possible_set(std::string set, int max_red, int max_blue, int max_green)
         end_of_entry = set.find(", ");
         if (end_of_entry != std::string::npos)
         {
-            set = set.substr(set.find(", ") + 2, std::string::npos);            
+            set = set.substr(set.find(", ") + 2, std::string::npos);
         }
         else
         {
@@ -76,4 +76,93 @@ bool is_possible_set(std::string set, int max_red, int max_blue, int max_green)
     }
 
     return result;
+}
+
+void update_min_color_count(std::string set, int *min_red, int *min_blue, int *min_green)
+{
+    std::string number_str;
+
+    size_t end_of_entry;
+
+    bool reached_end_of_set = false;
+    while (!reached_end_of_set)
+    {
+        size_t trailing_ws_pos = set.find(" ");
+        number_str = set.substr(0, trailing_ws_pos);
+        if (int number = std::stoi(number_str))
+        {
+            switch (set[trailing_ws_pos + 1])
+            {
+            case 'b':
+                if (number > *min_blue)
+                {
+                    *min_blue = number;
+                }
+                break;
+            case 'r':
+                if (number > *min_red)
+                {
+                    *min_red = number;
+                }
+                break;
+            case 'g':
+                if (number > *min_green)
+                {
+                    *min_green = number;
+                }
+                break;
+            default:
+                std::cout << "Uh... something is wrong." << std::endl;
+            }
+        }
+
+        end_of_entry = set.find(", ");
+        if (end_of_entry != std::string::npos)
+        {
+            set = set.substr(set.find(", ") + 2, std::string::npos);
+        }
+        else
+        {
+            reached_end_of_set = true;
+        }
+    }
+    return;
+}
+
+int calculate_cube_set_power(std::string game_line)
+{
+    int power;
+    std::string set;
+    size_t set_end;
+
+    int *min_blue = nullptr;
+    int *min_red = nullptr;
+    int *min_green = nullptr;
+
+    min_blue = new int;
+    min_red = new int;
+    min_green = new int;
+
+    *min_blue = 0;
+    *min_red = 0;
+    *min_green = 0;
+
+    while (true)
+    {
+        set_end = game_line.find("; ");
+        set = game_line.substr(0, set_end);
+        update_min_color_count(set, min_red, min_blue, min_green);
+
+        if (set_end != std::string::npos)
+        {
+            game_line = game_line.substr(set_end + 2, std::string::npos);
+        }
+        else
+        {   
+            break;
+        }
+    }
+
+    power = *min_blue * *min_red * *min_green;
+    return power;
 }
