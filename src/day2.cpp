@@ -6,15 +6,23 @@ bool is_possible_game(std::string game_line, int max_red, int max_blue, int max_
 {
     std::string set;
     size_t set_end;
-    while (!game_line.empty())
+    while (true)
     {
         set_end = game_line.find("; ");
         set = game_line.substr(0, set_end);
-        if (!is_possible_set(game_line.substr(0, set_end), max_red, max_blue, max_green))
+        if (!is_possible_set(set, max_red, max_blue, max_green))
         {
             return false;
         }
-        game_line = game_line.substr(set_end + 2, std::string::npos);
+
+        if (set_end != std::string::npos)
+        {
+            game_line = game_line.substr(set_end + 2, std::string::npos);
+        }
+        else
+        {
+            break;
+        }
     }
     return true;
 }

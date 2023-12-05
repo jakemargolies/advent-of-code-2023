@@ -10,7 +10,7 @@
 
 int main()
 {
-    std::list<int> possible_game_ids;
+    int answer = 0;
     std::string line;
 
     std::ifstream input_file("input.txt");
@@ -26,9 +26,10 @@ int main()
         std::string game_line = line.substr(header_end + 2, std::string::npos);
         if (is_possible_game(game_line, MAX_RED, MAX_BLUE, MAX_GREEN))
         {
-            possible_game_ids.push_back(game_id);
+            answer += game_id;
         }
     }
 
-    return std::accumulate(possible_game_ids.begin(), possible_game_ids.end(), 0);
+    std::cout << answer << std::endl;
+    return 0;
 }
